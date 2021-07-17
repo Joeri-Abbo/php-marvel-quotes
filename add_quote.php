@@ -13,7 +13,7 @@ $last_quote = $quotes[array_key_last($quotes)];
 
 var_dump($last_quote);
 
-//file_put_contents($path . '/quotes.json', json_encode($quotes));
+file_put_contents($path . '/quotes.json', json_encode($quotes));
 
 exec("cd " . $path . " && git add .");
 exec("cd " . $path . " && git commit -m'" . $last_quote['name'] . '' . $last_quote['quote'] . "'");
