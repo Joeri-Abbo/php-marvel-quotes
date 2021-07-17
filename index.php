@@ -5,6 +5,3 @@ shuffle($quotes);
 header('Content-Type: application/json');
 
 echo json_encode($quotes[key($quotes)]);
-
-
-//var_dump($quotes);
