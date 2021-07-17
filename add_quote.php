@@ -1,8 +1,9 @@
 <?php
-$path = getcwd();
+$path = '/Users/joeriabbo/Sites/marvel-quotes';
+var_dump($path . '/quotes.json');
 
 
-$quotes   = json_decode(file_get_contents('quotes.json'), true);
+$quotes   = json_decode(file_get_contents($path . '/quotes.json'), true);
 $quotes[] = [
     'name'  => $argv[1],
     'quote' => $argv[2],
@@ -12,10 +13,10 @@ $last_quote = $quotes[array_key_last($quotes)];
 
 var_dump($last_quote);
 
-file_put_contents('quotes.json', json_encode($quotes));
+//file_put_contents($path . '/quotes.json', json_encode($quotes));
 
-exec("git add .");
-exec("git commit -m'" . $last_quote['name'] . $last_quote['quote'] ."'");
+exec("cd " . $path . " && git add .");
+exec("cd " . $path . " && git commit -m'" . $last_quote['name'] . '' . $last_quote['quote'] . "'");
 
 function removeFirstAndLastChar(string $string)
 {
