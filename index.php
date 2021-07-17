@@ -1,6 +1,5 @@
 <?php
-$path = '/Users/joeriabbo/Sites/marvel-quotes';
-$quotes = file_get_contents($path . '/quotes.json');
+$quotes = file_get_contents( 'https://joeri-abbo.github.io/marvel-quotes/quotes.json');
 $quotes = json_decode($quotes, true);
 shuffle($quotes);
 header('Content-Type: application/json');
