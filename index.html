@@ -1,12 +1,21 @@
+<html>
+<body>
+<div id="quote">test</div>
+</body>
+</html>
 <script>
-    function Get(yourUrl){
+    function Get(url) {
         var Httpreq = new XMLHttpRequest(); // a new request
-        Httpreq.open("GET",yourUrl,false);
+        Httpreq.open("GET", url, false);
         Httpreq.send(null);
         return Httpreq.responseText;
     }
-    var json_obj = JSON.parse(Get("https://joeri-abbo.github.io/marvel-quotes/quotes.json"));
 
-    console.log(json_obj)
+    const quotes = JSON.parse(Get("https://joeri-abbo.github.io/marvel-quotes/quotes.json"));
+
+    const quote = quotes[Math.floor(Math.random() * quotes.length)];
+
+    console.log(document.getElementById('quote'))
+    document.getElementById('quote').innerHTML = quote.name + ' - ' + quote.quote;
 
 </script>
