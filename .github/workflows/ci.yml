@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: PHP Syntax Check
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: ["8.1", "8.2", "8.3"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+
+      - name: Check PHP syntax
+        run: find . -name "*.php" -not -path "./.git/*" | xargs -I{} php -l {}
+
+      - name: Validate quotes.json
+        run: php -r "
+          \$data = json_decode(file_get_contents('quotes.json'), true);
+          if (json_last_error() !== JSON_ERROR_NONE) {
+            echo 'Invalid JSON: ' . json_last_error_msg() . PHP_EOL;
+            exit(1);
+          }
+          if (!is_array(\$data) || count(\$data) === 0) {
+            echo 'quotes.json must be a non-empty array' . PHP_EOL;
+            exit(1);
+          }
+          foreach (\$data as \$i => \$entry) {
+            if (empty(\$entry['name']) || empty(\$entry['quote'])) {
+              echo 'Entry ' . \$i . ' missing name or quote field' . PHP_EOL;
+              exit(1);
+            }
+          }
+          echo 'quotes.json is valid (' . count(\$data) . ' quotes)' . PHP_EOL;
+        "
